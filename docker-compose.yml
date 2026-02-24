@@ -8,6 +8,7 @@ services:
       - SERVICES=dynamodb,s3
       - DEBUG=1
       - DATA_DIR=/tmp/localstack/data
+      - CLEAR_TMP_FOLDER=0
     volumes:
       - "./localstack/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
       - "localstack-data:/tmp/localstack"
