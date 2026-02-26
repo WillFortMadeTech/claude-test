@@ -42,6 +42,8 @@ export default function TodoForm({ categories, userId, onTodoCreated }: TodoForm
       });
 
       if (!todoResponse.ok) {
+        const errorData = await todoResponse.json();
+        console.error('API Error:', errorData);
         throw new Error('Failed to create todo');
       }
 

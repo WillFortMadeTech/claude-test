@@ -26,7 +26,11 @@ export async function generateUploadUrl(key: string, contentType: string): Promi
     ACL: 'public-read',
   });
 
-  return await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+  const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+
+  // Replace internal Docker hostname with public endpoint for browser access
+  const internalEndpoint = process.env.S3_ENDPOINT || 'http://localstack:4566';
+  return url.replace(internalEndpoint, S3_PUBLIC_ENDPOINT);
 }
 
 /**
@@ -38,7 +42,11 @@ export async function generateDownloadUrl(key: string): Promise<string> {
     Key: key,
   });
 
-  return await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+  const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+
+  // Replace internal Docker hostname with public endpoint for browser access
+  const internalEndpoint = process.env.S3_ENDPOINT || 'http://localstack:4566';
+  return url.replace(internalEndpoint, S3_PUBLIC_ENDPOINT);
 }
 
 /**

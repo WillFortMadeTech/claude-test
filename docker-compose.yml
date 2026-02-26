@@ -28,6 +28,17 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - DYNAMODB_ENDPOINT=http://localstack:4566
+      - S3_ENDPOINT=http://localstack:4566
+      - S3_PUBLIC_ENDPOINT=http://localhost:4566
+      - DYNAMODB_USERS_TABLE=reminder-users
+      - DYNAMODB_TODOS_TABLE=reminder-todos
+      - DYNAMODB_CATEGORIES_TABLE=reminder-categories
+      - S3_BUCKET_NAME=reminder-images
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
     volumes:
       - ./frontend:/app
       - /app/node_modules

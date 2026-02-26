@@ -36,12 +36,28 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { userId, title, description, categoryId, dueDate } = createTodoSchema.parse(body);
+    console.log('Received body:', JSON.stringify(body));
+
+    // Convert empty strings to undefined for optional fields
+    const sanitizedBody = {
+      ...body,
+      description: body.description || undefined,
+      categoryId: body.categoryId || undefined,
+      dueDate: body.dueDate || undefined,
+    };
+    console.log('Sanitized body:', JSON.stringify(sanitizedBody));
+
+    const { userId, title, description, categoryId, dueDate } = createTodoSchema.parse(sanitizedBody);
 
     const todo = await createTodo(userId, title, description, categoryId, dueDate);
     return NextResponse.json(todo, { status: 201 });
   } catch (error) {
+    console.error('Caught error:', error);
+    console.error('Error type:', typeof error);
+    console.error('Is ZodError?', error instanceof z.ZodError);
+
     if (error instanceof z.ZodError) {
+      console.error('Zod validation errors:', JSON.stringify(error.errors));
       return NextResponse.json(
         { error: 'Invalid request data', details: error.errors },
         { status: 400 }
@@ -50,7 +66,7 @@ export async function POST(request: NextRequest) {
 
     console.error('Error creating todo:', error);
     return NextResponse.json(
-      { error: 'Failed to create todo' },
+      { error: 'Failed to create todo', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }

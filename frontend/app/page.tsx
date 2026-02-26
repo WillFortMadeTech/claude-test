@@ -5,8 +5,8 @@ import { Todo, Category } from '@/lib/types';
 import TodoItem from '@/components/TodoItem';
 import TodoForm from '@/components/TodoForm';
 
-// For demo purposes, using a hardcoded user ID
-const DEMO_USER_ID = 'demo-user-123';
+// For demo purposes, using a hardcoded user ID (valid UUID v4 format)
+const DEMO_USER_ID = '00000000-0000-4000-8000-000000000001';
 
 export default function Home() {
   const [todos, setTodos] = useState<Todo[]>([]);
